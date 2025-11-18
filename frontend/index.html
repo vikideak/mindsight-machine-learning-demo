@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mindsight ML Demo</title>
+  <style>
+    body { font-family: Arial; margin: 40px; }
+    img { max-width: 300px; margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+  <h1>Mindsight ML Demo: Vehicle Classifier</h1>
+
+  <p>Classes: <strong>airplane, automobile, truck</strong></p>
+
+  <input type="file" id="fileInput" accept="image/*" />
+  <button onclick="predict()">Predict</button>
+
+  <h3 id="result"></h3>
+  <img id="preview" />
+
+  <script>
+    function previewImage() {
+      const file = document.getElementById("fileInput").files[0];
+      const preview = document.getElementById("preview");
+      preview.src = URL.createObjectURL(file);
+    }
+
+    async function predict() {
+      previewImage();
+
+      const fileInput = document.getElementById("fileInput");
+      const formData = new FormData();
+      formData.append("file", fileInput.files[0]);
+
+      const response = await fetch("http://localhost:8000/predict", {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await response.json();
+      document.getElementById("result").innerHTML =
+        `<strong>Prediction:</strong> ${data.prediction} (${data.confidence.toFixed(2)})`;
+    }
+  </script>
+
+</body>
+</html>

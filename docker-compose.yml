@@ -1,0 +1,27 @@
+services:
+  api:
+    build: 
+      context: .
+      dockerfile: api/Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  frontend:
+    image: nginx:latest
+    container_name: frontend
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+    ports:
+      - "8080:80"
+
+  train:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    command: ["python", "ml/train.py"]
+    volumes:
+      - .:/app

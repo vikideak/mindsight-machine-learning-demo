@@ -1,1 +1,1 @@
-# mindsight-machine-learning-demo
+# demo
