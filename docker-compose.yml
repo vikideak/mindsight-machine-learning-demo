@@ -17,11 +17,3 @@ services:
       - ./frontend:/usr/share/nginx/html:ro
     ports:
       - "8080:80"
-
-  train:
-    build:
-      context: .
-      dockerfile: api/Dockerfile
-    command: ["python", "ml/train.py"]
-    volumes:
-      - .:/app

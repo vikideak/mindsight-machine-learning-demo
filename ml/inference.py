@@ -1,10 +1,12 @@
 import torch
-from torchvision import transforms, models
-from PIL import Image
+from torchvision import models
 import json
+from ml.transforms import get_transform
+
+imagenet_mean = [0.485, 0.456, 0.406]
+imagenet_std  = [0.229, 0.224, 0.225]
 
 def load_model():
-    """Loads model and label mapping."""
     with open("ml/labels.json") as f:
         label_map = json.load(f)
 
@@ -14,16 +16,10 @@ def load_model():
     model.eval()
     return model, label_map
 
-transform = transforms.Compose([
-    transforms.Resize((224, 224)),
-    transforms.ToTensor(),
-])
+transform = get_transform()
 
-def predict_image(image_path):
-    """Predicts the class of an image file path."""
-    model, label_map = load_model()
-    img = Image.open(image_path).convert("RGB")
-    img = transform(img).unsqueeze(0)
+def predict_image(image, model, label_map):
+    img = transform(image).unsqueeze(0)
 
     with torch.no_grad():
         outputs = model(img)
@@ -31,3 +27,4 @@ def predict_image(image_path):
         confidence, pred = torch.max(probs, 1)
 
     return label_map[str(pred.item())], float(confidence.item())
+
