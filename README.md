@@ -48,6 +48,7 @@ docker compose down
 
 ## Project Structure
 
+```
 / (root)
 ├── api/             # Backend API service
 ├── ml/              # Machine learning training code & model files
@@ -55,6 +56,7 @@ docker compose down
 ├── requirements.txt # Python dependencies
 ├── docker-compose.yml
 └── .gitignore
+```
 
 ## Usage
 
